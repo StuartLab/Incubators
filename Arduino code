@@ -1,0 +1,601 @@
+/*!
+
+  * @file  ReadOxygenData.ino
+
+  * @brief Read oxygen concentration ,The unit is concentration percent (% vol).
+
+  * @n step: we must first determine the iic device address, will dial the code switch A0, A1 (ADDRESS_0 for [0 0]), (ADDRESS_1 for [1 0]), (ADDRESS_2 for [0 1]), (ADDRESS_3 for [1 1]).
+
+  * @n       And then read the data.
+
+  * @n note: it takes time to stable oxygen concentration, about 8 minutes.
+
+  *
+
+  * @n The experimental phenomenon is that a certain percentage of oxygen concentration is printed on the serial port.
+
+  * @n Because the oxygen concentration in oxygen air is certain, the data will not be greater than 25% vol.
+
+  *
+
+  * @copyright   Copyright (c) 2010 DFRobot Co.Ltd (http://www.dfrobot.com)
+
+  * @licence     The MIT License (MIT)
+
+  * @author      ZhixinLiu(zhixin.liu@dfrobot.com)
+
+  * @version     V0.2
+
+  * @date        2019-10-10
+
+  * @get         from https://www.dfrobot.com
+
+  * @url   */
+
+//
+
+//    FILE: CozirDemoSoftwareSerial.ino
+
+//  AUTHOR: Rob Tillaart
+
+// VERSION: 0.1.1
+
+// PURPOSE: demo of Cozir lib
+
+//    DATE: 2015-jan-17
+
+//     URL: http://forum.arduino.cc/index.php?topic=91467.0
+
+//
+
+#include "cozir.h"
+
+#include "SoftwareSerial.h"
+
+#include <TM1637.h>
+
+ 
+
+#include <DFRobot_OxygenSensor.h>
+
+#include "DFRobot_OxygenSensor.h"
+
+#define COLLECT_NUMBER    10
+
+#define Oxygen_IICAddress ADDRESS_3
+
+DFRobot_OxygenSensor Oxygen;
+
+ 
+
+SoftwareSerial sws(12, 13);
+
+ 
+
+COZIR czr(&sws);
+
+ 
+
+const int CO2solenoidPin = 4;
+
+const int O2solenoidPin = 7;                         
+
+int CLK = 2;
+
+int DIO = 3;
+
+int buttonPin = 8;
+
+int buttonState = 0;
+
+float O2previous = 0;
+
+ 
+
+TM1637 tm(CLK, DIO);
+
+ 
+
+ 
+
+void setup() {
+
+  // put your setup code here, to run once:
+
+  sws.begin(9600);
+
+  czr.init();
+
+ 
+
+  tm.init();
+
+ 
+
+  tm.set(1);
+
+ 
+
+  Serial.begin(9600);
+
+  while (!Oxygen.begin(Oxygen_IICAddress)) {
+
+    Serial.println("I2c device number error !");
+
+    delay(1000);
+
+  }
+
+  Serial.println("I2c connect success !");
+
+  while (!Serial) {
+
+ 
+
+  }
+
+  Serial.print("Cozir SoftwareSerial: ");
+
+  Serial.println(COZIR_LIB_VERSION);
+
+  Serial.println();
+
+ 
+
+  pinMode(O2solenoidPin, OUTPUT);
+
+  pinMode(buttonPin, INPUT);
+
+  pinMode(CO2solenoidPin, OUTPUT);
+
+ 
+
+  delay(1000);
+
+ 
+
+}
+
+ 
+
+void loop() {
+
+  // put your main code here, to run repeatedly:
+
+  float t = czr.Celsius();
+
+  float f = czr.Fahrenheit();
+
+  float h = czr.Humidity();
+
+  uint32_t c = czr.CO2();
+
+  int CO2data = c * 10;
+
+  if (CO2data >= 0) {
+
+    Serial.print(millis());
+
+    Serial.print(", ");
+
+    Serial.print (CO2data);
+
+    Serial.println (", ");
+
+    int CO2printO = CO2data / 100;
+
+    tm.display (0, CO2printO / 1000);   // prints CO2 value in %
+
+    tm.display (1, CO2printO / 100);
+
+    tm.point (1);
+
+    tm.display (2, CO2printO / 10 % 10);
+
+    tm.display (3 , CO2printO % 10);
+
+    delay (2000);
+
+    digitalWrite (CO2solenoidPin, HIGH);
+
+    delay (400);
+
+    digitalWrite (CO2solenoidPin, LOW);
+
+    delay (2000);
+
+    if (buttonState == HIGH){
+
+      tm.display (0, 13);
+
+      tm.display (1, 0);
+
+      tm.point (0);
+
+      tm.display (2, 0);
+
+      tm. display (3, 7);
+
+      delay (30000);}
+
+      else {
+
+        delay (100);
+
+      }
+
+  }
+
+  if (CO2data < 0) {
+
+    Serial.print(millis());
+
+    Serial.print (", ");
+
+    Serial.print ((64000 + CO2data));
+
+    Serial.println (", ");
+
+    tm.display (0, ((64000 + CO2data)/100) / 1000);   // prints CO2 value in %
+
+    tm.display (1, ((64000 + CO2data)/100) / 100);
+
+    tm.point (1);
+
+    tm.display (2, ((64000 + CO2data)/100) / 10 % 10);
+
+    tm.display (3 , ((64000 + CO2data)/100) % 10);
+
+    delay (1000);
+
+    if (CO2data < -22000 & CO2data > -31000){
+
+      digitalWrite (CO2solenoidPin, HIGH);
+
+      delay (400);
+
+      digitalWrite (CO2solenoidPin, LOW);
+
+      delay (1000);
+
+      if (buttonState == HIGH){
+
+      tm.display (0, 13);
+
+      tm.display (1, 0);
+
+      tm.point (0);
+
+      tm.display (2, 0);
+
+      tm. display (3, 7);
+
+      delay (30000);}
+
+      else {
+
+        delay (100);
+
+      }
+
+    }
+
+    if (CO2data < -14700 & CO2data > -20000){
+
+      digitalWrite (CO2solenoidPin, HIGH);
+
+      delay (102);
+
+      digitalWrite (CO2solenoidPin, LOW);
+
+      delay (1000);
+
+      if (buttonState == HIGH){
+
+      tm.display (0, 13);
+
+      tm.display (1, 0);
+
+      tm.point (0);
+
+      tm.display (2, 0);
+
+      tm. display (3, 7);
+
+      delay (30000);}
+
+      else {
+
+        delay (100);
+
+      }
+
+    }
+
+    if (buttonState == HIGH){
+
+      tm.display (0, 13);
+
+      tm.display (1, 0);
+
+      tm.point (0);
+
+      tm.display (2, 0);
+
+      tm. display (3, 7);
+
+      delay (30000);}
+
+      else {
+
+        delay (100);
+
+      }
+
+     delay (2000);
+
+    }
+
+  float oxygenData = Oxygen.ReadOxygenData(COLLECT_NUMBER);
+
+  int O2data = oxygenData * 100;
+
+  Serial.print(millis());
+
+  Serial.print(", , ");
+
+  Serial.println(oxygenData);
+
+  delay(250);
+
+  tm.display (0, O2data / 1000);
+
+  tm.display (1, O2data / 100 % 10);
+
+  tm.point (1);
+
+  tm.display (2, O2data / 10 % 10);
+
+  tm.display (3, O2data % 10);
+
+  delay (1000);
+
+ 
+
+  if (oxygenData < 4.98){
+
+    O2previous = oxygenData;}
+
+ 
+
+  if (oxygenData >= 4.98 && oxygenData < 5.08 && O2previous <= oxygenData) {        //Change % as needed
+
+    digitalWrite(O2solenoidPin, HIGH);
+
+    delay (700);                  //Change delay as needed
+
+    digitalWrite(O2solenoidPin, LOW);
+
+    buttonState = digitalRead (buttonPin);
+
+    if (buttonState == HIGH){
+
+      tm.display (0, 13);
+
+      tm.display (1, 0);
+
+      tm.point (0);
+
+      tm.display (2, 0);
+
+      tm. display (3, 7);
+
+      delay (30000);}
+
+      else {
+
+        delay (100);
+
+      }
+
+    O2previous = oxygenData;
+
+    delay (2000);
+
+  }
+
+  if (oxygenData >= 5.08 && oxygenData < 5.2) {        //Change % as needed
+
+    digitalWrite(O2solenoidPin, HIGH);
+
+    delay (1400);                  //Change delay as needed
+
+    digitalWrite(O2solenoidPin, LOW);
+
+    buttonState = digitalRead (buttonPin);
+
+    if (buttonState == HIGH){
+
+      tm.display (0, 13);
+
+      tm.display (1, 0);
+
+      tm.point (0);
+
+      tm.display (2, 0);
+
+      tm. display (3, 7);
+
+      delay (30000);}
+
+     else {
+
+        delay (100);
+
+      }
+
+    O2previous = oxygenData;
+
+    delay (5000);
+
+  } 
+
+  if (oxygenData >= 5.2 && oxygenData <= 6.3) {        //Change % as needed
+
+    digitalWrite(O2solenoidPin, HIGH);
+
+    delay (800);                  //Change delay as needed
+
+    digitalWrite(O2solenoidPin, LOW);
+
+    buttonState = digitalRead (buttonPin);
+
+    if (buttonState == HIGH){
+
+      tm.display (0, 13);
+
+      tm.display (1, 0);
+
+      tm.point (0);
+
+      tm.display (2, 0);
+
+      tm. display (3, 7);
+
+      delay (30000);}
+
+      else {
+
+        delay (100);
+
+      }
+
+    delay (2500);
+
+  }
+
+  if (oxygenData > 6.3 && oxygenData <= 7){
+
+    digitalWrite (O2solenoidPin, HIGH);
+
+    delay (950);
+
+    digitalWrite (O2solenoidPin, LOW);
+
+    buttonState = digitalRead (buttonPin);
+
+    if (buttonState == HIGH){
+
+      tm.display (0, 13);
+
+      tm.display (1, 0);
+
+      tm.point (0);
+
+      tm.display (2, 0);
+
+      tm. display (3, 7);
+
+      delay (30000);}
+
+      else {
+
+        delay (100);
+
+      }
+
+    delay (2000);
+
+  }
+
+  if (oxygenData >= 7 && oxygenData < 8.5) {        //Change % as needed
+
+    digitalWrite(O2solenoidPin, HIGH);
+
+    delay (1200);                  //Change delay as needed
+
+    digitalWrite(O2solenoidPin, LOW);
+
+    buttonState = digitalRead (buttonPin);
+
+    if (buttonState == HIGH){
+
+      tm.display (0, 13);
+
+      tm.display (1, 0);
+
+      tm.point (0);
+
+      tm.display (2, 0);
+
+      tm. display (3, 7);
+
+      delay (30000);}
+
+      else {
+
+        delay (100);
+
+      }
+
+    delay (2000);
+
+  } 
+
+  if (oxygenData >= 8.5) {
+
+    digitalWrite (O2solenoidPin, HIGH);
+
+    delay (3000);
+
+    digitalWrite (O2solenoidPin, LOW);
+
+    buttonState = digitalRead (buttonPin);
+
+    if (buttonState == HIGH){
+
+      tm.display (0, 13);
+
+      tm.display (1, 0);
+
+      tm.point (0);
+
+      tm.display (2, 0);
+
+      tm. display (3, 7);
+
+      delay (30000);}
+
+      else {
+
+        delay (100);
+
+      }
+
+    delay (2000);
+
+  }
+
+  buttonState = digitalRead (buttonPin);
+
+  if (buttonState == HIGH){
+
+    tm.display (0, 13);
+
+    tm.display (1, 0);
+
+    tm.point (0);
+
+    tm.display (2, 0);
+
+    tm. display (3, 7);
+
+    delay (30000);}
+
+    else {
+
+      delay (100);
+
+  }
+
+}
