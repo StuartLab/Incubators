@@ -24,7 +24,7 @@
 - :book: [**The Publication**](Coming Soon) - This incubator was published in an international, peer-reviewed, open-access journal called Oxygen. All original designs and assembly details can be found in this manuscript + the supplementary data sections. 
 - :computer: [**Arduino Code**](https://github.com/StuartLab/Incubators/blob/main/Arduino%20code) 
 - 🛒 [**Materials List**] (Coming Soon)
-- ❓ [**Questions**](https://github.com/StuartLab/Incubators/issues) - Submit questions and assembly requests here!
+- ❓ [**Issue Forum**](https://github.com/StuartLab/Incubators/issues) - Submit questions, concerns and assembly requests here!
 
 ## Technologies Used
 - 
