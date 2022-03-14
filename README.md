@@ -48,11 +48,12 @@ List the ready features here:
 
 
 ## Usage
--
+- This benchtop incubator is primarily intended for academic research labs looking to introduce physioxic cell culture conditions. The interior of the incubator is suitable for both adherent and suspension cell culture, comfortably accomodating at least 25 100mm stacked tissue culture disks and/or flasks. 
+- Specific setpoint gas levels (O2 and CO2) can be altered to suit the conditions required by the user. The code is currently set to maintain a physioxic level of 5% O2, and standard 5% CO2. 
 
 ## Points to Keep in Mind
-- Depending on the application, the Uno and solenoid valves can be powered in one of two ways. For applications where the system is only run for short periods of time, both the Uno and solenoids can be powered with a single 12VDC power supply. However, if the application requires the Uno to be constantly powered, as in the incubator application developed here, the Uno should be powered with a lower voltage (9VDC), while the solenoid valves are powered independently with a 12VDC power supply!
-- Heatsinks may be required for various components including the transistors, though we did not find them necessary under our conditions. Monitoring the temperature of electrical components is critical in the early stages of development to determine the need for heatsinks.!
+- Depending on the application, the Uno and solenoid valves can be powered in one of two ways. For applications where the system is only run for short periods of time, both the Uno and solenoids can be powered with a single 12VDC power supply. However, if the application requires the Uno to be constantly powered, as in the incubator application developed here, the Uno should be powered with a lower voltage (9VDC), while the solenoid valves are powered independently with a 12VDC power supply.
+- Heatsinks may be required for various components including the transistors, though we did not find them necessary under our conditions. Monitoring the temperature of electrical components is critical in the early stages of development to determine the need for heatsinks.
 
 
 ## Contact
