@@ -6,10 +6,9 @@
 * [Project Road Map](#project-road-map)
 * [Technologies Used](#technologies-used)
 * [Features](#features)
-* [Screenshots](#screenshots)
+* [Design](#design)
 * [Setup](#setup)
 * [Usage](#usage)
-* [Project Status](#project-status)
 * [Points to Keep in Mind](#points-to-keep-in-mind)
 * [Contact](#contact)
 <!-- * [License](#license) -->
@@ -25,6 +24,7 @@
 - :book: [**The Publication**](Coming Soon)
 - :computer: [**Arduino Code**](https://github.com/StuartLab/Incubators/blob/main/Arduino%20code) 
 - 🛒 [**Materials List**] (Coming Soon)
+- ❓ [**Questions**](https://github.com/StuartLab/Incubators/issues)
 
 ## Technologies Used
 - 
@@ -50,11 +50,8 @@ List the ready features here:
 ## Usage
 -
 
-## Project Status
-Project is: _in progress_ / _complete_ / _no longer being worked on_. 
-
 ## Points to Keep in Mind
 -
 
 ## Contact
-Created by  - feel free to contact me!
+Created by [@StuartLab](https://github.com/StuartLab) -- Feel free to contact us with questions or concerns about incubator assembly!
