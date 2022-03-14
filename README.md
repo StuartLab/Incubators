@@ -41,7 +41,7 @@
 
 
 ## Usage
-- This benchtop incubator is primarily intended for academic research labs looking to introduce physioxic cell culture conditions. The interior of the incubator is suitable for both adherent and suspension cell culture, comfortably accomodating at least 25 100mm stacked tissue culture disks and/or flasks. 
+- This benchtop incubator is primarily intended for academic research labs looking to incorporate physioxic cell culture conditions. The interior of the incubator is suitable for both adherent and suspension cell culture, comfortably accomodating at least 25 100mm stacked tissue culture disks and/or flasks. 
 - Specific setpoint gas levels (O2 and CO2) can be altered to suit the conditions required by the user. The code is currently set to maintain a physioxic level of 5% O2, and standard 5% CO2. 
 
 ## Points to Keep in Mind
