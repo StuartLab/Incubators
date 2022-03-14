@@ -51,7 +51,9 @@ List the ready features here:
 -
 
 ## Points to Keep in Mind
--
+- Depending on the application, the Uno and solenoid valves can be powered in one of two ways. For applications where the system is only run for short periods of time, both the Uno and solenoids can be powered with a single 12VDC power supply. However, if the application requires the Uno to be constantly powered, as in the incubator application developed here, the Uno should be powered with a lower voltage (9VDC), while the solenoid valves are powered independently with a 12VDC power supply!
+- Heatsinks may be required for various components including the transistors, though we did not find them necessary under our conditions. Monitoring the temperature of electrical components is critical in the early stages of development to determine the need for heatsinks.!
+
 
 ## Contact
 Created by [@StuartLab](https://github.com/StuartLab) -- Feel free to contact us with questions or concerns about incubator assembly!
