@@ -5,7 +5,6 @@
 * [General Info](#general-information)
 * [Project Road Map](#project-road-map)
 * [Technologies Used](#technologies-used)
-* [Features](#features)
 * [Design](#design)
 * [Setup](#setup)
 * [Usage](#usage)
@@ -27,12 +26,6 @@
 - ❓ [**Issue Forum**](https://github.com/StuartLab/Incubators/issues) - Submit questions, concerns and assembly requests here!
 
 ## Technologies Used
-- 
-
-
-## Features
-List the ready features here:
-- Awesome feature 1
 - 
 
 
